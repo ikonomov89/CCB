@@ -14,7 +14,7 @@ public class Employee extends BaseEntity {
     private BigDecimal salary;
     private LocalDate startedOn;
     private Branch branch;
-//    private List<Client> clients;
+    private List<Client> clients;
 
     public Employee() {
     }
@@ -56,7 +56,7 @@ public class Employee extends BaseEntity {
     }
 
     @ManyToOne(targetEntity = Branch.class)
-    @JoinColumn(name = "branch", nullable = false)
+    @JoinColumn(name = "branch", referencedColumnName = "id", nullable = false)
     public Branch getBranch() {
         return this.branch;
     }
@@ -65,12 +65,16 @@ public class Employee extends BaseEntity {
         this.branch = branch;
     }
 
-//
-//    public List<Client> getClients() {
-//        return this.clients;
-//    }
-//
-//    public void setClients(List<Client> clients) {
-//        this.clients = clients;
-//    }
+    @ManyToMany(targetEntity = Client.class)
+    @JoinTable(
+            name = "employees_clients",
+            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"))
+    public List<Client> getClients() {
+        return this.clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
 }
