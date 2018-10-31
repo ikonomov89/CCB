@@ -1,34 +1,25 @@
 package app.ccb.domain.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-//
-//@Entity
-//@Table(name = "employees")
-public class Employee {
 
-    private Integer id;
+@Entity
+@Table(name = "employees")
+public class Employee extends BaseEntity {
+
     private String firstName;
     private String lastName;
     private BigDecimal salary;
     private LocalDate startedOn;
     private Branch branch;
-    private List<Client> clients;
+//    private List<Client> clients;
 
     public Employee() {
     }
 
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
+    @Column(name = "first_name", nullable = false)
     public String getFirstName() {
         return this.firstName;
     }
@@ -37,6 +28,7 @@ public class Employee {
         this.firstName = firstName;
     }
 
+    @Column(name = "last_name", nullable = false)
     public String getLastName() {
         return this.lastName;
     }
@@ -45,6 +37,7 @@ public class Employee {
         this.lastName = lastName;
     }
 
+    @Column(name = "salary")
     public BigDecimal getSalary() {
         return this.salary;
     }
@@ -53,6 +46,7 @@ public class Employee {
         this.salary = salary;
     }
 
+    @Column(name = "started_on")
     public LocalDate getStartedOn() {
         return this.startedOn;
     }
@@ -61,6 +55,8 @@ public class Employee {
         this.startedOn = startedOn;
     }
 
+    @ManyToOne(targetEntity = Branch.class)
+    @JoinColumn(name = "branch", nullable = false)
     public Branch getBranch() {
         return this.branch;
     }
@@ -69,11 +65,12 @@ public class Employee {
         this.branch = branch;
     }
 
-    public List<Client> getClients() {
-        return this.clients;
-    }
-
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
-    }
+//
+//    public List<Client> getClients() {
+//        return this.clients;
+//    }
+//
+//    public void setClients(List<Client> clients) {
+//        this.clients = clients;
+//    }
 }
