@@ -1,6 +1,7 @@
 package app.ccb.domain.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "clients")
@@ -14,6 +15,7 @@ public class Client extends BaseEntity {
     }
 
     @Column(name = "full_name", nullable = false)
+    @NotNull
     public String getFullName() {
         return this.fullName;
     }

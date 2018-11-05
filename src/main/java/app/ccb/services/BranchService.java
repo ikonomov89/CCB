@@ -2,7 +2,7 @@ package app.ccb.services;
 
 import java.io.IOException;
 
-public interface BranchesService {
+public interface BranchService {
 
     String readBranchesJsonFile() throws IOException;
 

@@ -1,6 +1,7 @@
 package app.ccb.domain.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Employee extends BaseEntity {
     }
 
     @Column(name = "first_name", nullable = false)
+    @NotNull
     public String getFirstName() {
         return this.firstName;
     }
@@ -29,6 +31,7 @@ public class Employee extends BaseEntity {
     }
 
     @Column(name = "last_name", nullable = false)
+    @NotNull
     public String getLastName() {
         return this.lastName;
     }
@@ -57,6 +60,7 @@ public class Employee extends BaseEntity {
 
     @ManyToOne(targetEntity = Branch.class)
     @JoinColumn(name = "branch", referencedColumnName = "id", nullable = false)
+    @NotNull
     public Branch getBranch() {
         return this.branch;
     }
@@ -65,7 +69,7 @@ public class Employee extends BaseEntity {
         this.branch = branch;
     }
 
-    @ManyToMany(targetEntity = Client.class)
+    @ManyToMany(targetEntity = Client.class, cascade = CascadeType.ALL)
     @JoinTable(
             name = "employees_clients",
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),

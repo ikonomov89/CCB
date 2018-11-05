@@ -1,6 +1,7 @@
 package app.ccb.domain.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "cards")
@@ -14,6 +15,7 @@ public class Card extends BaseEntity{
     }
 
     @Column(name = "card_number", nullable = false)
+    @NotNull
     public String getCardNumber() {
         return this.cardNumber;
     }
@@ -23,6 +25,7 @@ public class Card extends BaseEntity{
     }
 
     @Column(name = "card_status", nullable = false)
+    @NotNull
     public String getCardStatus() {
         return this.cardStatus;
     }

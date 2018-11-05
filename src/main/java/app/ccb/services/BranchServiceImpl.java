@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class BranchesServiceImpl implements BranchesService {
+public class BranchServiceImpl implements BranchService {
 
     private static final String BRANCHES_JSON_FILE_PATH = "D:\\Repositories\\BitBucket\\ColonialCouncilBank\\src\\main\\resources\\files\\json\\branches.json";
 
@@ -22,7 +22,7 @@ public class BranchesServiceImpl implements BranchesService {
     private final ValidationUtil validationUtil;
     private final ModelMapper modelMapper;
 
-    public BranchesServiceImpl(BranchRepository branchRepository, FileUtil fileUtil, ValidationUtil validationUtil, ModelMapper modelMapper) {
+    public BranchServiceImpl(BranchRepository branchRepository, FileUtil fileUtil, ValidationUtil validationUtil, ModelMapper modelMapper) {
         this.branchRepository = branchRepository;
         this.fileUtil = fileUtil;
         this.validationUtil = validationUtil;
@@ -47,6 +47,8 @@ public class BranchesServiceImpl implements BranchesService {
                 this.branchRepository.saveAndFlush(branch);
                 sb.append(String.format("Successfully imported Branch - %s", branch.getName()))
                         .append(System.lineSeparator());
+            } else {
+                sb.append("Invalid Branch").append(System.lineSeparator());
             }
         }
 
