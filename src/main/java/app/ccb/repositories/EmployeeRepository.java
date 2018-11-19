@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,4 +14,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query("FROM Employee e WHERE concat(e.firstName, ' ', e.lastName) = :fullName")
     Optional<Employee> findByFullName(@Param("fullName") String fullName);
+
+    @Query(
+            "SELECT e " +
+            "FROM app.ccb.domain.entities.Employee e " +
+            "JOIN e.clients c " +
+            "GROUP BY e.id " +
+            "ORDER BY size(e.clients) DESC, e.id "
+    )
+    List<Employee> getAllTopEmployees();
 }

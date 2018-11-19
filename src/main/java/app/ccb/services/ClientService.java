@@ -7,4 +7,6 @@ public interface ClientService {
     String readClientsJsonFile() throws IOException;
 
     String importClients(String clients);
+
+    String exportFamilyGuy();
 }

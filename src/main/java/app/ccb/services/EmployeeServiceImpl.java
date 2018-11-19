@@ -2,6 +2,7 @@ package app.ccb.services;
 
 import app.ccb.domain.dtos.EmployeeImportDto;
 import app.ccb.domain.entities.Branch;
+import app.ccb.domain.entities.Client;
 import app.ccb.domain.entities.Employee;
 import app.ccb.repositories.BranchRepository;
 import app.ccb.repositories.EmployeeRepository;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -77,18 +77,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String exportTopEmployees() {
-        List<Employee> employees = this.employeeRepository.findAll()
-                .stream()
-                .filter(e -> e.getClients().size() > 0)
-                .collect(Collectors.toList());
+        List<Employee> employees = this.employeeRepository.getAllTopEmployees();
 
-        employees.stream().sorted((e1, e2) -> {
-            if (e1.getClients().size() > e2.getClients().size()) {
-                return 1;
-            } else {
-                return -1;
+        StringBuilder sb = new StringBuilder();
+        for (Employee employee : employees) {
+            sb.append(String.format("Full Name: %s %s", employee.getFirstName(), employee.getLastName())).append(System.lineSeparator());
+            sb.append(String.format("Salary: %.2f", employee.getSalary())).append(System.lineSeparator());
+            sb.append(String.format("Started On: %s", String.valueOf(employee.getStartedOn()))).append(System.lineSeparator());
+            sb.append("Clients: ").append(System.lineSeparator());
+
+            for (Client client : employee.getClients()) {
+                sb.append(String.format("   %s", client.getFullName())).append(System.lineSeparator());
             }
-        });
-        return null;
+
+            sb.append(System.lineSeparator());
+        }
+
+        return sb.toString();
     }
 }

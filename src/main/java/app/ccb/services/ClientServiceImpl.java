@@ -1,6 +1,7 @@
 package app.ccb.services;
 
 import app.ccb.domain.dtos.ClientImportDto;
+import app.ccb.domain.entities.Card;
 import app.ccb.domain.entities.Client;
 import app.ccb.domain.entities.Employee;
 import app.ccb.repositories.ClientRepository;
@@ -75,5 +76,22 @@ public class ClientServiceImpl implements ClientService {
         }
 
         return sb.toString().trim();
+    }
+
+    @Override
+    public String exportFamilyGuy() {
+        Client client = this.clientRepository.getFamilyGuy().stream().findFirst().orElse(null);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Full Name: %s", client.getFullName())).append(System.lineSeparator());
+        sb.append(String.format("Age: %d", client.getAge())).append(System.lineSeparator());
+        sb.append(String.format("Bank Account: %s", client.getBankAccount().getAccountNumber())).append(System.lineSeparator());
+
+        for (Card card : client.getBankAccount().getCards()) {
+            sb.append(String.format("   Card Number: %s", card.getCardNumber())).append(System.lineSeparator());
+            sb.append(String.format("   Card Status: %s", card.getCardStatus())).append(System.lineSeparator());
+        }
+
+        return sb.toString();
     }
 }
