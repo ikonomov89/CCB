@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public interface BankAccountService {
 
+    boolean bankAccountsAreImported();
+
     String readBankAccountsXmlFile() throws IOException;
 
     String importBankAccounts() throws JAXBException, FileNotFoundException;

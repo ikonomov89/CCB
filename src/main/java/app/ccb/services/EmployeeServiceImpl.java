@@ -36,6 +36,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Boolean employeesAreImported() {
+        return this.employeeRepository.count() != 0;
+    }
+
+    @Override
     public String readEmployeesJsonFile() throws IOException {
         return this.fileUtil.readFile(EMPLOYEES_JSON_FILE_PATH);
     }

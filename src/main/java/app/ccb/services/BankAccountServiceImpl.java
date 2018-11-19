@@ -35,6 +35,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    public boolean bankAccountsAreImported() {
+        return this.bankAccountRepository.count() != 0;
+    }
+
+    @Override
     public String readBankAccountsXmlFile() throws IOException {
         return this.fileUtil.readFile(BANK_ACCOUNTS_XML_FILE_PATH);
     }

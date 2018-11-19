@@ -35,6 +35,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public boolean cardsAreImported() {
+        return this.cardRepository.count() != 0;
+    }
+
+    @Override
     public String readCardsXmlFile() throws IOException {
         return this.fileUtil.readFile(CARDS_XML_FILE_PATH);
     }

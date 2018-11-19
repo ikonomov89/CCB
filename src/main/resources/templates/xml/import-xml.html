@@ -10,8 +10,15 @@
                     <h4>Click the buttons below to import XML.</h4>
                 </div>
                 <div class="col-md-12 d-flex justify-content-center">
-                    <a class="btn btn-primary mx-5 my-5"th:href="@{/import/bank-accounts}">Import Bank Accounts</a>
-                    <a class="btn btn-primary mx-5 my-5"th:href="@{/import/cards}">Import Cards</a>
+                    <th:block th:if="${areImported[0] == false}">
+                        <a class="btn btn-primary mx-5 my-5"th:href="@{/import/bank-accounts}">Import Bank Accounts</a>
+                    </th:block>
+                    <th:block th:if="${areImported[1] == false}">
+                        <a class="btn btn-primary mx-5 my-5"th:href="@{/import/cards}">Import Cards</a>
+                    </th:block>
+                    <th:block th:if="${areImported[0] == true && areImported[1] == true}">
+                        <p>All XML files are imported.</p>
+                    </th:block>
                 </div>
             </div>
         </div>

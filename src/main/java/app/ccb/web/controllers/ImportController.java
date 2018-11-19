@@ -34,12 +34,23 @@ public class ImportController extends BaseController {
 
     @GetMapping("/json")
     public ModelAndView importJson() {
-        return super.view("json/import-json");
+        boolean[] areImported = new boolean[]{
+                this.branchService.branchesAreImported(),
+                this.employeeService.employeesAreImported(),
+                this.clientService.clientsAreImported()
+        };
+
+        return super.view("json/import-json", "areImported", areImported);
     }
 
     @GetMapping("/xml")
     public ModelAndView importXml() {
-        return super.view("xml/import-xml");
+        boolean[] areImported = new boolean[]{
+                this.bankAccountService.bankAccountsAreImported(),
+                this.cardService.cardsAreImported()
+        };
+
+        return super.view("xml/import-xml", "areImported", areImported);
     }
 
     @GetMapping("/branches")
@@ -95,7 +106,7 @@ public class ImportController extends BaseController {
         String importResult = this.bankAccountService.importBankAccounts();
         System.out.println(importResult);
 
-        return super.redirect("/");
+        return super.redirect("/import/xml");
     }
 
     @GetMapping("/cards")

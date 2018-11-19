@@ -34,6 +34,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Boolean clientsAreImported() {
+        return this.clientRepository.count() != 0;
+    }
+
+    @Override
     public String readClientsJsonFile() throws IOException {
         return this.fileUtil.readFile(CLIENTS_JSON_FILE_PATH);
     }

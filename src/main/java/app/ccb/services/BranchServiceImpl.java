@@ -32,6 +32,11 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
+    public Boolean branchesAreImported() {
+        return this.branchRepository.count() != 0;
+    }
+
+    @Override
     public String readBranchesJsonFile() throws IOException {
         return this.fileUtil.readFile(BRANCHES_JSON_FILE_PATH);
     }
