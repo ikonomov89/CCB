@@ -7,4 +7,6 @@ public interface EmployeeService {
     String readEmployeesJsonFile() throws IOException;
 
     String importEmployees(String employees);
+
+    String exportTopEmployees();
 }

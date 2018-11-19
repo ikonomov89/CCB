@@ -36,7 +36,7 @@ public class BankAccount extends BaseEntity{
         this.balance = balance;
     }
 
-    @OneToOne(mappedBy = "bankAccount")
+    @OneToOne(mappedBy = "bankAccount", cascade = CascadeType.ALL)
     public Client getClient() {
         return this.client;
     }

@@ -9,6 +9,7 @@ import app.ccb.util.FileUtil;
 import app.ccb.util.ValidationUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class ClientServiceImpl implements ClientService {
     private final FileUtil fileUtil;
     private final ValidationUtil validationUtil;
 
+    @Autowired
     public ClientServiceImpl(ClientRepository clientRepository, EmployeeRepository employeeRepository, FileUtil fileUtil, ValidationUtil validationUtil) {
         this.clientRepository = clientRepository;
         this.employeeRepository = employeeRepository;
@@ -43,18 +45,27 @@ public class ClientServiceImpl implements ClientService {
         StringBuilder sb = new StringBuilder();
         for (ClientImportDto clientImportDto : clientImportDtos) {
             if (clientImportDto.getFirstName() == null || clientImportDto.getLastName() == null) {
-                sb.append("Invalid Client").append(System.lineSeparator());
+                sb.append("Error: Incorrect Data!").append(System.lineSeparator());
                 continue;
             }
 
-            Client client = new Client();
+            Client client = this.clientRepository
+                    .findByFullName(String.format("%s %s", clientImportDto.getFirstName(), clientImportDto.getLastName()))
+                    .orElse(null);
+
+            if (client != null) {
+                sb.append("Error: Incorrect Data!").append(System.lineSeparator());
+                continue;
+            }
+
+            client = new Client();
             client.setFullName(String.format("%s %s", clientImportDto.getFirstName(), clientImportDto.getLastName()));
             client.setAge(clientImportDto.getAge());
 
             Employee employee = this.employeeRepository.findByFullName(clientImportDto.getAppointedEmployee()).orElse(null);
 
             if (employee == null) {
-                sb.append("Invalid Client").append(System.lineSeparator());
+                sb.append("Error: Incorrect Data!").append(System.lineSeparator());
                 continue;
             }
 

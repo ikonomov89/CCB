@@ -1,8 +1,7 @@
 package app.ccb.web.controllers;
 
-import app.ccb.services.BranchService;
-import app.ccb.services.ClientService;
-import app.ccb.services.EmployeeService;
+import app.ccb.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.xml.bind.JAXBException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Controller
@@ -19,16 +20,26 @@ public class ImportController extends BaseController {
     private final BranchService branchService;
     private final EmployeeService employeeService;
     private final ClientService clientService;
+    private final BankAccountService bankAccountService;
+    private final CardService cardService;
 
-    public ImportController(BranchService branchService, EmployeeService employeeService, ClientService clientService) {
+    @Autowired
+    public ImportController(BranchService branchService, EmployeeService employeeService, ClientService clientService, BankAccountService bankAccountService, CardService cardService) {
         this.branchService = branchService;
         this.employeeService = employeeService;
         this.clientService = clientService;
+        this.bankAccountService = bankAccountService;
+        this.cardService = cardService;
     }
 
     @GetMapping("/json")
     public ModelAndView importJson() {
         return super.view("json/import-json");
+    }
+
+    @GetMapping("/xml")
+    public ModelAndView importXml() {
+        return super.view("xml/import-xml");
     }
 
     @GetMapping("/branches")
@@ -73,5 +84,31 @@ public class ImportController extends BaseController {
         return super.redirect("/");
     }
 
+    @GetMapping("/bank-accounts")
+    public ModelAndView importBankAccounts() throws IOException {
+        String bankAccountXmlFile = this.bankAccountService.readBankAccountsXmlFile();
+        return super.view("xml/import-bank-accounts", "bankAccounts", bankAccountXmlFile);
+    }
 
+    @PostMapping("/bank-accounts")
+    public ModelAndView importBankAccountsConfirm() throws JAXBException, FileNotFoundException {
+        String importResult = this.bankAccountService.importBankAccounts();
+        System.out.println(importResult);
+
+        return super.redirect("/");
+    }
+
+    @GetMapping("/cards")
+    public ModelAndView importCards() throws IOException {
+        String cardXmlFile = this.cardService.readCardsXmlFile();
+        return super.view("xml/import-cards", "cards", cardXmlFile);
+    }
+
+    @PostMapping("/cards")
+    public ModelAndView importCardsConfirm() throws JAXBException, FileNotFoundException {
+        String importResult = this.cardService.importCards();
+        System.out.println(importResult);
+
+        return super.redirect("/");
+    }
 }

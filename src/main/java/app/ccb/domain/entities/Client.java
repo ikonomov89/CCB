@@ -33,7 +33,7 @@ public class Client extends BaseEntity {
         this.age = age;
     }
 
-    @OneToOne(targetEntity = BankAccount.class)
+    @OneToOne(targetEntity = BankAccount.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "bank_account")
     public BankAccount getBankAccount() {
         return this.bankAccount;

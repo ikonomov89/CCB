@@ -9,11 +9,13 @@ import app.ccb.util.FileUtil;
 import app.ccb.util.ValidationUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -24,14 +26,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final BranchRepository branchRepository;
     private final FileUtil fileUtil;
     private final ValidationUtil validationUtil;
-    private final ModelMapper modelMapper;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, BranchRepository branchRepository, FileUtil fileUtil, ValidationUtil validationUtil, ModelMapper modelMapper) {
+    @Autowired
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, BranchRepository branchRepository, FileUtil fileUtil, ValidationUtil validationUtil) {
         this.employeeRepository = employeeRepository;
         this.branchRepository = branchRepository;
         this.fileUtil = fileUtil;
         this.validationUtil = validationUtil;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employee.setFirstName(firstName);
                 employee.setLastName(lastName);
             } catch (Exception e) {
-                sb.append("Invalid Employee").append(System.lineSeparator());
+                sb.append("Error: Incorrect Data!").append(System.lineSeparator());
                 continue;
             }
             Branch branch = this.branchRepository.findByName(employeeImportDto.getBranchName()).orElse(null);
@@ -67,10 +68,27 @@ public class EmployeeServiceImpl implements EmployeeService {
                 sb.append(String.format("Successfully imported Employee - %s %s.", employee.getFirstName(), employee.getLastName()))
                         .append(System.lineSeparator());
             } else {
-                sb.append("Invalid Employee").append(System.lineSeparator());
+                sb.append("Error: Incorrect Data!").append(System.lineSeparator());
             }
         }
 
         return sb.toString().trim();
+    }
+
+    @Override
+    public String exportTopEmployees() {
+        List<Employee> employees = this.employeeRepository.findAll()
+                .stream()
+                .filter(e -> e.getClients().size() > 0)
+                .collect(Collectors.toList());
+
+        employees.stream().sorted((e1, e2) -> {
+            if (e1.getClients().size() > e2.getClients().size()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+        return null;
     }
 }

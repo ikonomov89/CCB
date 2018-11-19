@@ -8,6 +8,7 @@ import app.ccb.util.ValidationUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class BranchServiceImpl implements BranchService {
     private final ValidationUtil validationUtil;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public BranchServiceImpl(BranchRepository branchRepository, FileUtil fileUtil, ValidationUtil validationUtil, ModelMapper modelMapper) {
         this.branchRepository = branchRepository;
         this.fileUtil = fileUtil;
@@ -48,7 +50,7 @@ public class BranchServiceImpl implements BranchService {
                 sb.append(String.format("Successfully imported Branch - %s", branch.getName()))
                         .append(System.lineSeparator());
             } else {
-                sb.append("Invalid Branch").append(System.lineSeparator());
+                sb.append("Error: Incorrect Data!").append(System.lineSeparator());
             }
         }
 

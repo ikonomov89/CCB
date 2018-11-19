@@ -34,7 +34,7 @@ public class Card extends BaseEntity{
         this.cardStatus = cardStatus;
     }
 
-    @ManyToOne(targetEntity = BankAccount.class)
+    @ManyToOne(targetEntity = BankAccount.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "bank_account")
     public BankAccount getBankAccount() {
         return this.bankAccount;
