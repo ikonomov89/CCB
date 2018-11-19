@@ -53,7 +53,7 @@ public class ImportController extends BaseController {
         String importResult = this.branchService.importBranches(branches);
         System.out.println(importResult);
 
-        return super.redirect("/");
+        return super.redirect("/import/json");
     }
 
     @GetMapping("/employees")
@@ -67,7 +67,7 @@ public class ImportController extends BaseController {
         String importResult = this.employeeService.importEmployees(employees);
         System.out.println(importResult);
 
-        return super.redirect("/");
+        return super.redirect("/import/json");
     }
 
     @GetMapping("/clients")
@@ -81,7 +81,7 @@ public class ImportController extends BaseController {
         String importResult = this.clientService.importClients(clients);
         System.out.println(importResult);
 
-        return super.redirect("/");
+        return super.redirect("/import/json");
     }
 
     @GetMapping("/bank-accounts")
@@ -91,7 +91,7 @@ public class ImportController extends BaseController {
     }
 
     @PostMapping("/bank-accounts")
-    public ModelAndView importBankAccountsConfirm() throws JAXBException, FileNotFoundException {
+    public ModelAndView importBankAccountsConfirm() throws FileNotFoundException, JAXBException {
         String importResult = this.bankAccountService.importBankAccounts();
         System.out.println(importResult);
 
@@ -109,6 +109,6 @@ public class ImportController extends BaseController {
         String importResult = this.cardService.importCards();
         System.out.println(importResult);
 
-        return super.redirect("/");
+        return super.redirect("/import/xml");
     }
 }
