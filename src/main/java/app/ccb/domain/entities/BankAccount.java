@@ -7,47 +7,52 @@ import java.util.List;
 
 @Entity
 @Table(name = "bank_accounts")
-public class BankAccount extends BaseEntity{
+public class BankAccount extends BaseEntity {
 
+    @NotNull
+    @Column(name = "account_number", nullable = false)
     private String accountNumber;
+
+    @Column(name = "balance")
     private BigDecimal balance;
+
+    //    @OneToOne(mappedBy = "bankAccount")
+    @OneToOne(targetEntity = Client.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
+
+    @OneToMany(targetEntity = Card.class, cascade = CascadeType.ALL, mappedBy = "bankAccount")
     private List<Card> cards;
 
     public BankAccount() {
     }
 
-    @Column(name = "account_number", nullable = false)
-    @NotNull
     public String getAccountNumber() {
-        return this.accountNumber;
+        return accountNumber;
     }
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    @Column(name = "balance")
     public BigDecimal getBalance() {
-        return this.balance;
+        return balance;
     }
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
-    @OneToOne(mappedBy = "bankAccount", cascade = CascadeType.ALL)
     public Client getClient() {
-        return this.client;
+        return client;
     }
 
     public void setClient(Client client) {
         this.client = client;
     }
 
-    @OneToMany(mappedBy = "bankAccount", targetEntity = Card.class)
     public List<Card> getCards() {
-        return this.cards;
+        return cards;
     }
 
     public void setCards(List<Card> cards) {

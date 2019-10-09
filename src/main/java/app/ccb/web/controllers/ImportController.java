@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 
 @Controller
 @RequestMapping("/import")
@@ -74,7 +75,7 @@ public class ImportController extends BaseController {
     }
 
     @PostMapping("/employees")
-    public ModelAndView importEmployeesConfirm(@RequestParam(required = false, name = "employees") String employees) {
+    public ModelAndView importEmployeesConfirm(@RequestParam(required = false, name = "employees") String employees) throws ParseException {
         String importResult = this.employeeService.importEmployees(employees);
         System.out.println(importResult);
 

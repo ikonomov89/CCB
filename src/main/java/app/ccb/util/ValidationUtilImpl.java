@@ -1,18 +1,20 @@
 package app.ccb.util;
 
-import javax.validation.Validation;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.validation.Validator;
 
-public class ValidationUtilImpl implements ValidationUtil {
+public class ValidationUtilImpl implements ValidationUtil{
 
-    private Validator validator;
+    private final Validator validator;
 
-    public ValidationUtilImpl() {
-        this.validator = validator = Validation.buildDefaultValidatorFactory().getValidator();
+    @Autowired
+    public ValidationUtilImpl(Validator validator) {
+        this.validator = validator;
     }
 
     @Override
     public <E> boolean isValid(E entity) {
-        return this.validator.validate(entity).size() == 0;
+        return validator.validate(entity).size() == 0;
     }
 }
